@@ -42,11 +42,12 @@ function apiCall(commandName, requestParams, sandbox) {
         });
       },
       function (xmlString, callback) {
-        xml2js(xmlString, function (error, data) {
-          if (error && !data) {
-            return callback(error);
-          }
-          callback(null, data);
+        var cleanedString = xmlString.replace("\ufeff", "");
+            xml2js(cleanedString, function (error, data) {
+              if (error && !data) {
+                return callback(error);
+              }
+              callback(null, data);
         });
       }
     ], function (err, result) {
