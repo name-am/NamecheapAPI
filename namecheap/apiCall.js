@@ -43,11 +43,15 @@ function apiCall(commandName, requestParams, sandbox) {
       },
       function (xmlString, callback) {
         var cleanedString = xmlString.replace("\ufeff", "");
-            xml2js(cleanedString, function (error, data) {
-              if (error && !data) {
-                return callback(error);
-              }
-              callback(null, data);
+        const firstTagStart = cleanedString.indexOf('<');
+        if (firstTagStart > 0) {
+            cleanedString = cleanedString.substring(firstTagStart);
+        }
+        xml2js(cleanedString, function (error, data) {
+          if (error && !data) {
+            return callback(error);
+          }
+          callback(null, data);
         });
       }
     ], function (err, result) {
